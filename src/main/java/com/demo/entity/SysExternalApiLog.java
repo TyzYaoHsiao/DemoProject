@@ -1,14 +1,13 @@
 package com.demo.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,12 +26,12 @@ public class SysExternalApiLog {
     @Column(name = "MSG_ID", length = 50)
     private String msgId;
 
-    @Column(name = "REQUEST", length = 3000)
-    private String request;
+    @Column(name = "MSG_TYPE", nullable = false, length = 1)
+    private String msgType;
 
-    @Column(name = "RESPONSE", length = 3000)
-    private String response;
+    @Column(name = "MSG_CONTENT", length = 3000)
+    private String msgContent;
 
-    @Column(name = "CREATE_TIME", length = 20)
-    private LocalDateTime createTime;
+    @Column(name = "MSG_TIME", nullable = false)
+    private LocalDateTime msgTime;
 }

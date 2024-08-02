@@ -8,7 +8,7 @@ import com.demo.api.service.SysService;
 import com.demo.constant.MessageConst;
 import com.demo.entity.SysApiLog;
 import com.demo.entity.SysExternalApiLog;
-import com.demo.error.CustomException;
+import com.demo.error.DemoException;
 import com.demo.repository.SysApiLogRepository;
 import com.demo.repository.SysExternalApiLogRepository;
 import com.demo.util.DateUtil;
@@ -34,7 +34,7 @@ public class SysServiceImpl implements SysService {
 
         List<SysApiLog> sysApiLogList =  sysApiLogRepository.findAllByOrderByIdDesc();
         if (CollectionUtils.isEmpty(sysApiLogList)){
-            throw new CustomException(MessageConst.RtnCode.NOT_DATA, MessageConst.NO_DATA);
+            throw new DemoException(MessageConst.RtnCode.DATA_NOT_FOUND);
         }
 
         return GetSysApiLogListRes.builder()
@@ -54,7 +54,7 @@ public class SysServiceImpl implements SysService {
 
         List<SysExternalApiLog> sysExternalApiLogList =  sysExternalApiLogRepository.findAllByOrderByIdDesc();
         if (CollectionUtils.isEmpty(sysExternalApiLogList)){
-            throw new CustomException(MessageConst.RtnCode.NOT_DATA, MessageConst.NO_DATA);
+            throw new DemoException(MessageConst.RtnCode.DATA_NOT_FOUND);
         }
 
         return GetSysExternalApiLogListRes.builder()
@@ -62,7 +62,7 @@ public class SysServiceImpl implements SysService {
                         .map(r -> {
                             GetSysExternalApiLogListRes.SysExternalApiLog sysExternalApiLog = new GetSysExternalApiLogListRes.SysExternalApiLog();
                             BeanUtils.copyProperties(r, sysExternalApiLog);
-                            sysExternalApiLog.setCreateTime(DateUtil.formatDateToStr(r.getCreateTime(), DateUtil.BASIC_FORMAT));
+                            sysExternalApiLog.setCreateTime(DateUtil.formatDateToStr(r.getMsgTime(), DateUtil.BASIC_FORMAT));
                             return sysExternalApiLog;
                         })
                         .collect(Collectors.toList()))

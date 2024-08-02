@@ -1,78 +1,67 @@
 package com.demo.aop.aspect;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.demo.constant.Const;
+import com.demo.constant.SysConst;
 import com.demo.util.HttpContextUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
- * http log
+ * http log aspect
  */
 @Slf4j
 @Aspect
 @Component
 @Order(value = 2)
+@RequiredArgsConstructor
 public class HttpLogAspect {
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     @Around(value = "com.demo.aop.pointcut.PointcutDefinition.restLayer()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
 
-        HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
         long beginTimeMillis = System.currentTimeMillis();
+        Object result = new HashMap<>();
 
-        Object[] args = joinPoint.getArgs();
-        String argsStr;
-        try {
-            argsStr = objectMapper.writeValueAsString(args);
-        } catch (Exception e) {
-            argsStr = Arrays.toString(args);
-        }
-
-        Map<String, Object> outputParamMap = new HashMap<>();
-
-        Object result;
         try {
             result = joinPoint.proceed();
-            outputParamMap.put("result", result);
         } finally {
-            try {
-                long endTimeMillis = System.currentTimeMillis(); // 記錄方法執行完成的時間
-                long costTime = endTimeMillis - beginTimeMillis;
-
-                String response = objectMapper.writeValueAsString(outputParamMap);
-                if (response.length() > Const.FILE_LOG_LIMIT_MSG_LENGTH) {
-                    response = response.substring(0, Const.FILE_LOG_LIMIT_MSG_LENGTH);
-                }
-
-                log.info("=======Start=======");
-                if (request != null) {
-                    log.info("URL            : {}", request.getRequestURI());
-                    log.info("HTTP Method    : {}", request.getMethod());
-                    log.info("IP             : {}", request.getRemoteHost());
-                }
-
-                log.info("Class Method   : {}.{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
-                log.info("Request Args   : {}", argsStr);
-                log.info("Result         : {}", response);
-                log.info("costTime       : {}", costTime);
-                log.info("=======End=========" + System.lineSeparator());
-            } catch (Exception e) {
-                //不處理
+            HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
+            String response = objectMapper.writeValueAsString(result);
+            if (response.length() > SysConst.FILE_LOG_MAX_LENGTH) {
+                response = response.substring(0, SysConst.FILE_LOG_MAX_LENGTH);
             }
+
+            Object[] args = joinPoint.getArgs();
+            String argsStr;
+            try {
+                argsStr = objectMapper.writeValueAsString(args);
+            } catch (Exception e) {
+                argsStr = Arrays.toString(args);
+            }
+
+            log.info("===========================Start=================================================");
+            if (request != null) {
+                log.info("URL            : {}", request.getRequestURI());
+                log.info("HTTP Method    : {}", request.getMethod());
+                log.info("IP             : {}", request.getRemoteHost());
+            }
+
+            log.info("Class Method   : {}.{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+            log.info("Request Args   : {}", argsStr);
+            log.info("Result         : {}", response);
+            log.info("costTime       : {}", beginTimeMillis - System.currentTimeMillis());
+            log.info("===========================End==================================================");
         }
 
         return result;

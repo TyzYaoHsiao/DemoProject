@@ -24,7 +24,7 @@ public class GetSysExternalApiLogListRes {
         private Long id;
         private String txnSeq;
         private String msgId;
-        private String request;
+        private String msg;
         private String response;
         private String createTime;
     }

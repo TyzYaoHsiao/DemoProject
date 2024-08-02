@@ -1,9 +1,8 @@
 package com.demo.api.model.req;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 @Getter
 public class RequestEntity<T> {

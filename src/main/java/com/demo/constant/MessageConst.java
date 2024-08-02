@@ -1,5 +1,6 @@
 package com.demo.constant;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -7,33 +8,24 @@ import lombok.Getter;
  */
 public class MessageConst {
 
-    public static final String NO_DATA = "查無資料";
-    public static final String SYSTEM_ERROR = "系統錯誤";
-    public static final String PARSE_DATE_ERROR = "日期格式錯誤";
-    public static final String ACCESS_DENIED = "無權限存取";
-
     @Getter
+    @AllArgsConstructor
     public enum RtnCode {
-        // 成功
-        SUCCESS("0000"),
 
+        FORBIDDEN         ("403",  "無權限存取"),
+        NOT_FOUND         ("404",  "查無資源「{0}」"),
+        METHOD_NOT_ALLOWED("405",  "不支援「{0}」方法"),
 
-        // 查無資料
-        NOT_DATA("0404"),
-        // 欄位檢核錯誤
-        FIELD_ERROR("9997"),
-        //日期格式錯誤
-        DATE_FORMAT_ERROR("9998"),
-        // 系統錯誤
-        SYSTEM_ERROR("9999"),
+        SUCCESS           ("0000", "執行成功"),
+        DATA_NOT_FOUND    ("0001", "查無資料"),
+        FIELD_ERROR       ("9997", "欄位檢核錯誤 : {0}"),
+        DATE_FORMAT_ERROR ("9998", "日期格式錯誤 : {0}"),
+        SYSTEM_ERROR      ("9999", "系統錯誤"),
 
-        // 無權限
-        FORBIDDEN("403");
+        DEMO_API_ERROR    ("9999", "Demo API 連線失敗")
+        ;
 
         private final String code;
-
-        RtnCode(String code) {
-            this.code = code;
-        }
+        private final String msg;
     }
 }

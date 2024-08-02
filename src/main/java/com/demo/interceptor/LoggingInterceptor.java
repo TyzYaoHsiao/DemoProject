@@ -1,7 +1,7 @@
 package com.demo.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.conn.ConnectTimeoutException;
+import org.apache.hc.client5.http.ConnectTimeoutException;
 import org.springframework.ws.client.WebServiceClientException;
 import org.springframework.ws.client.support.interceptor.ClientInterceptor;
 import org.springframework.ws.context.MessageContext;

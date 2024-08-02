@@ -33,7 +33,7 @@ public class EncryptDecryptUtil {
         try {
             Cipher cipher = Cipher.getInstance(model);
             cipher.init(Cipher.ENCRYPT_MODE, newKey, ivSpec);
-            return Base64.encodeBase64String(cipher.doFinal(mes.getBytes("UTF-8")));
+            return Base64.encodeBase64String(cipher.doFinal(mes.getBytes(StandardCharsets.UTF_8)));
         } catch (Exception e) {
             log.error("aesEncrypt ERROR: ", e);
         }

@@ -1,6 +1,6 @@
 package com.demo.config;
 
-import com.demo.constant.JwtConst;
+import com.demo.constant.SysConst;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -44,11 +44,12 @@ public class OpenApiConfig {
 
         return new OpenAPI()
                 .components(new Components()
-                        .addSecuritySchemes(JwtConst.JWT_HEADER_NAME, new SecurityScheme()
+                        .addSecuritySchemes(SysConst.TOKEN_HEADER_NAME, new SecurityScheme()
                                 .type(SecurityScheme.Type.APIKEY)
                                 .in(SecurityScheme.In.HEADER)
-                                .name(JwtConst.JWT_HEADER_NAME)))
-                .addSecurityItem(new SecurityRequirement().addList(JwtConst.JWT_HEADER_NAME))
+                                .name(SysConst.TOKEN_HEADER_NAME))
+                )
+                .addSecurityItem(new SecurityRequirement().addList(SysConst.TOKEN_HEADER_NAME))
                 .servers(serverList)
                 .info(new Info()
                         .title(title)

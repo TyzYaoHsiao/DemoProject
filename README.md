@@ -35,7 +35,7 @@
 
 ## 開發 ##
 1. 錯誤處理統一由 ExceptionHandler 回覆錯誤
-2. 錯誤直接 throw CustomException 
+2. 錯誤直接 throw DemoException 
 3. 除邏輯需求，不做 catch Exception 處理
 
 ## validator ##
@@ -48,7 +48,7 @@
 2. 使用在單純 java Bean(get set)，常用 @Builder、@AllArgsConstructor、@NoArgsConstructor、@Data
 
 ## swagger ##
-1. http://127.0.0.1:8080/demo/swagger-ui.html
+1. http://127.0.0.1:8080/demo/swagger-ui/index.html
 2. 在右上 Authorize 註冊 token ex: Bearer accessToken
 
 ## spring data ##

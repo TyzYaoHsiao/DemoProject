@@ -3,13 +3,12 @@ package com.demo.externalapi.demo.req;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
 @AllArgsConstructor
-@NotBlank
+@NoArgsConstructor
 public class DemoBaseReq<T> {
 
     private String txnSeq;

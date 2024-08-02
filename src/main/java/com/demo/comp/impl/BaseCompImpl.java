@@ -1,6 +1,7 @@
 package com.demo.comp.impl;
 
-import com.demo.constant.Const;
+import com.demo.constant.ApiConst;
+import com.demo.constant.SysConst;
 import com.demo.domain.UserProfile;
 import com.demo.entity.SysExternalApiLog;
 import com.demo.repository.SysExternalApiLogRepository;
@@ -13,7 +14,7 @@ import org.springframework.http.MediaType;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * 電文共用
@@ -21,7 +22,7 @@ import java.util.Arrays;
 public class BaseCompImpl {
 
     @Autowired
-    private UserProfile userProfile;
+    protected UserProfile userProfile;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -29,13 +30,37 @@ public class BaseCompImpl {
     @Autowired
     private SysExternalApiLogRepository sysExternalApiLogRepository;
 
-    protected void insertExternalApiLog(Object request, Object response, String msgId) {
+    protected String getUrl(String key) {
+        return "";
+    }
+
+    /**
+     * 寫入請求 LOG
+     *
+     * @param msgId
+     * @param request
+     */
+    protected void insertReqLog(String msgId, Object request) {
+        insertLog(msgId, ApiConst.MsgType.REQ, request);
+    }
+
+    /**
+     * 寫入回應 LOG
+     *
+     * @param msgId
+     * @param response
+     */
+    protected void insertResLog(String msgId, Object response) {
+        insertLog(msgId, ApiConst.MsgType.RES, response);
+    }
+
+    private void insertLog(String msgId, ApiConst.MsgType msgType, Object msgContent) {
         SysExternalApiLog log = SysExternalApiLog.builder()
-                .msgId(msgId)
                 .txnSeq(userProfile.getTxnSeq())
-                .request(getMsgContent(request))
-                .response(getMsgContent(response))
-                .createTime(DateUtil.getNow())
+                .msgId(msgId)
+                .msgType(msgType.getCode())
+                .msgContent(getMsgContent(msgContent))
+                .msgTime(DateUtil.getNow())
                 .build();
         sysExternalApiLogRepository.save(log);
     }
@@ -54,8 +79,8 @@ public class BaseCompImpl {
             msg = obj.toString();
         }
 
-        if (msg.length() > Const.DB_LOG_LIMIT_MSG_LENGTH) {
-            msg = StringUtils.substring(msg, 0, Const.DB_LOG_LIMIT_MSG_LENGTH);
+        if (msg.length() > SysConst.DB_LOG_MAX_LENGTH) {
+            msg = StringUtils.substring(msg, 0, SysConst.DB_LOG_MAX_LENGTH);
         }
         return msg;
     }
@@ -67,23 +92,10 @@ public class BaseCompImpl {
      */
     public HttpHeaders getHttpJsonHeader() {
         HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
         return headers;
     }
-
-    /**
-     * http header form data
-     *
-     * @return
-     */
-    public HttpHeaders getHttpMutipartHeader() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(MediaType.MULTIPART_FORM_DATA, MediaType.APPLICATION_JSON));
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-        return headers;
-    }
-
 
     /**
      * 泛型處理

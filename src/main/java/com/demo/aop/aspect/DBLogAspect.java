@@ -1,12 +1,13 @@
 package com.demo.aop.aspect;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.demo.api.model.req.BaseReq;
-import com.demo.constant.Const;
+import com.demo.api.model.req.RequestEntity;
+import com.demo.constant.SysConst;
 import com.demo.domain.UserProfile;
 import com.demo.entity.SysApiLog;
 import com.demo.repository.SysApiLogRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -14,7 +15,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -30,16 +30,12 @@ import java.util.Map;
 @Aspect
 @Component
 @Order(value = 4)
-public class LogAspect {
+@RequiredArgsConstructor
+public class DBLogAspect {
 
-    @Autowired
-    private UserProfile userProfile;
-
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    private SysApiLogRepository sysApiLogRepository;
+    private final UserProfile userProfile;
+    private final ObjectMapper objectMapper;
+    private final SysApiLogRepository sysApiLogRepository;
 
     @Around(value = "com.demo.aop.pointcut.PointcutDefinition.restLayer()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -50,7 +46,7 @@ public class LogAspect {
         try {
             result = joinPoint.proceed();
         } catch (Exception e) {
-            log.error("LogAspect hasException : " + e.getMessage());
+            log.error("LogAspect hasException : {}", e.getMessage());
             hasException = true;
             exception = e;
         }
@@ -58,7 +54,7 @@ public class LogAspect {
         try {
             saveSysApiLog(joinPoint, result, hasException, exception);
         } catch (Exception e) {
-            log.error("saveSysApiLog error: " + e.getMessage());
+            log.error("saveSysApiLog error: {}", e.getMessage());
         }
 
         if (hasException) {
@@ -79,14 +75,14 @@ public class LogAspect {
         try {
             if (args != null) {
                 for (Object object : args) {
-                    if (object instanceof BaseReq baseReq) {
-                        params = getMsgContent(baseReq);
+                    if (object instanceof RequestEntity requestEntity) {
+                        params = getMsgContent(requestEntity);
                     }
                 }
             }
         } catch (Exception e) {
             params = Arrays.toString(args);
-            log.error("saveSysApiLog toJSONString error : " + e.getMessage());
+            log.error("saveSysApiLog toJSONString error : {}", e.getMessage());
         }
 
         sysApiLog.setUserId(userProfile.getUserId());
@@ -156,8 +152,8 @@ public class LogAspect {
         }
 
         String msg = objectMapper.writeValueAsString(obj);
-        if (msg.length() > Const.DB_LOG_LIMIT_MSG_LENGTH) {
-            msg = StringUtils.substring(msg, 0, Const.DB_LOG_LIMIT_MSG_LENGTH);
+        if (msg.length() > SysConst.DB_LOG_MAX_LENGTH) {
+            msg = StringUtils.substring(msg, 0, SysConst.DB_LOG_MAX_LENGTH);
         }
         return msg;
     }

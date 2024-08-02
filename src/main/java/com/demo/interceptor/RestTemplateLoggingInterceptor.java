@@ -1,7 +1,6 @@
 package com.demo.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -28,15 +27,11 @@ public class RestTemplateLoggingInterceptor implements ClientHttpRequestIntercep
 
     private void traceRequestAndGetDatabaseLogger(HttpRequest request, byte[] body) {
         log.info("===========================request begin================================================");
-        String uri = request.getURI().toString();
-        log.info("URI         : {}", uri);
-        HttpMethod httpMethod = request.getMethod();
-        log.info("Method      : {}", httpMethod);
+        log.info("URI         : {}", request.getURI());
+        log.info("Method      : {}", request.getMethod());
         log.info("Headers     : {}", request.getHeaders());
-        String reqBodyMsg = new String(body, StandardCharsets.UTF_8);
-        log.info("Request body: {}", reqBodyMsg);
+        log.info("Request body: {}", new String(body, StandardCharsets.UTF_8));
         log.info("==========================request end================================================");
-
     }
 
     private void traceResponse(HttpRequest request, ClientHttpResponse response) {
