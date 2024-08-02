@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: dev
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties.hibernate.format_sql: true
+
+springdoc:
+  swagger-ui:
+    #http://localhost:8080/demo/swagger-ui/index.html
+    enabled: true
+  api-docs:
+    path: /v3/api-docs
+  info:
+    title: 'Backend API'
+    description: 'Backend API'
+    version: '20240101'
+
+server:
+  servlet:
+    context-path: /demo
+  port: 8080

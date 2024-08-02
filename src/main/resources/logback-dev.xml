@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- configuration file for LogBack (slf4J implementation)
+See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-through-the-java-loggers/ -->
+
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <!-- To enable JMX Management -->
+    <jmxConfigurator/>
+    <property name="LOGGER_ROOT" value="C:/gitlab/demo/log" />
+    <property name="logger.level" value="info" />
+	<property name="FILE_NAME_PATTERN" value="_%d{yyyy-MM-dd}.%i.log.gz" />
+	<property name="ENCODER_PATTERN" value="%red(%d{yyyy-MM-dd HH:mm:ss}) %highlight([%-5level]) %green(traceId:[%X{traceId}]) %boldMagenta(%logger{0}[%M:%L]) - %msg%n" />
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${ENCODER_PATTERN}</pattern>
+        </encoder>
+    </appender>
+	
+	<appender name="FILE_API"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<FileNamePattern>${LOGGER_ROOT}/demo${FILE_NAME_PATTERN}
+			</FileNamePattern>
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>10GB</totalSizeCap>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>UTF-8</charset>
+            <Pattern>${ENCODER_PATTERN}</Pattern>
+		</encoder>
+	</appender>
+    
+    <appender name="FILE_API_ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE_API"/>
+    </appender>
+
+    <root level="${logger.level}">
+        <appender-ref ref="CONSOLE"/>
+		<appender-ref ref="FILE_API_ASYNC"/>
+    </root>
+</configuration>

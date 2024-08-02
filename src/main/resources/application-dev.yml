@@ -1,0 +1,26 @@
+logging:
+  config: classpath:logback-dev.xml
+
+springdoc:
+  servers: http://localhost:8080/demo,http://127.0.0.1:8080/demo
+
+spring:
+  jpa:
+    show-sql: true
+    spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+  datasource:
+    # TODO FOR DEMO H2 需要置換、拔除script
+    url: jdbc:h2:mem:mydb;INIT=RUNSCRIPT FROM 'classpath:scripts/create.sql'
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  h2:
+    console.enabled: true
+
+# TODO FOR DEMO
+demo:
+  url: http://127.0.0.1:8080/demo
+
+jwt:
+  token:
+    secret: ziyaotest123
