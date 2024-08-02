@@ -2,7 +2,7 @@ package com.demo.aop.aspect;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.demo.api.model.req.RequestEntity;
+import com.demo.api.model.req.BaseReq;
 import com.demo.constant.Const;
 import com.demo.domain.UserProfile;
 import com.demo.entity.SysApiLog;
@@ -79,8 +79,8 @@ public class LogAspect {
         try {
             if (args != null) {
                 for (Object object : args) {
-                    if (object instanceof RequestEntity requestEntity) {
-                        params = getMsgContent(requestEntity);
+                    if (object instanceof BaseReq baseReq) {
+                        params = getMsgContent(baseReq);
                     }
                 }
             }

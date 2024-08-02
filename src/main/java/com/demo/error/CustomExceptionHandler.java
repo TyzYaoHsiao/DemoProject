@@ -1,6 +1,6 @@
 package com.demo.error;
 
-import com.demo.api.model.res.ResponseEntity;
+import com.demo.api.model.res.BaseRes;
 import com.demo.constant.MessageConst;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
@@ -66,8 +66,8 @@ public class CustomExceptionHandler {
         return returnResponse(new CustomException(MessageConst.RtnCode.SYSTEM_ERROR, MessageConst.SYSTEM_ERROR));
     }
 
-    private ResponseEntity<Object> returnResponse(CustomException e) {
-        return ResponseEntity.builder()
+    private BaseRes<Object> returnResponse(CustomException e) {
+        return BaseRes.builder()
                 .code(e.getCode())
                 .msg(e.getMsg())
                 .result(new Object())

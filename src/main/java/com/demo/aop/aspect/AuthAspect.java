@@ -1,9 +1,14 @@
 package com.demo.aop.aspect;
 
-import com.demo.api.model.req.RequestEntity;
+import com.demo.api.model.req.BaseReq;
+import com.demo.constant.JwtConst;
+import com.demo.domain.JwtToken;
 import com.demo.domain.UserProfile;
+import com.demo.util.JwtTokenUtil;
 import com.demo.util.RequestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
@@ -50,6 +55,7 @@ public class AuthAspect {
         }
 
         apiInfo(joinPoint, httpServletRequest);
+        tokenInfo(httpServletRequest);
     }
 
     /**
@@ -62,11 +68,28 @@ public class AuthAspect {
         Object[] args = joinPoint.getArgs();
         if (args != null) {
             for (Object object : args) {
-                if (object instanceof RequestEntity requestEntity) {
-                    userProfile.setTxnSeq(requestEntity.getTxnSeq());
+                if (object instanceof BaseReq baseReq) {
+                    userProfile.setTxnSeq(baseReq.getTxnSeq());
                     userProfile.setClientIp(RequestUtils.getIpAddr(httpServletRequest));
                 }
             }
+        }
+    }
+
+    /**
+     * jwt token 資訊
+     *
+     * @param httpServletRequest
+     */
+    private void tokenInfo(HttpServletRequest httpServletRequest) {
+
+        String token = httpServletRequest.getHeader(JwtConst.JWT_HEADER_NAME);
+
+        if (StringUtils.isNotBlank(token)) {
+            Jws<Claims> jws = JwtTokenUtil.claimsParam(token, JWT_TOKEN_SECRET);
+            JwtToken identity = objectMapper.convertValue(jws.getBody().get(JwtConst.JwtParams.IDENTITY.name()), JwtToken.class);
+            userProfile.setUserId(identity.getUserId());
+            userProfile.setUserName(identity.getUserName());
         }
     }
 }

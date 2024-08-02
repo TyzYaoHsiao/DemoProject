@@ -1,6 +1,6 @@
 package com.demo.controller;
 
-import com.demo.api.model.res.ResponseEntity;
+import com.demo.api.model.res.BaseRes;
 import com.demo.constant.MessageConst;
 
 public class BaseController {
@@ -11,12 +11,12 @@ public class BaseController {
      * @param result
      * @return
      */
-    public <T> ResponseEntity<T> result(T result) {
+    public <T> BaseRes<T> result(T result) {
         MessageConst.RtnCode rtnCode = MessageConst.RtnCode.SUCCESS;
-        ResponseEntity<T> responseEntity = new ResponseEntity<>();
-        responseEntity.setCode(rtnCode.getCode());
-        responseEntity.setMsg(rtnCode.name());
-        responseEntity.setResult(result);
-        return responseEntity;
+        BaseRes<T> baseRes = new BaseRes<>();
+        baseRes.setCode(rtnCode.getCode());
+        baseRes.setMsg(rtnCode.name());
+        baseRes.setResult(result);
+        return baseRes;
     }
 }

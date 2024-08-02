@@ -1,9 +1,9 @@
 package com.demo.api.controller;
 
-import com.demo.api.model.req.RequestEntity;
+import com.demo.api.model.req.BaseReq;
 import com.demo.api.model.req.sys.GetSysApiLogListReq;
 import com.demo.api.model.req.sys.GetSysExternalApiLogListReq;
-import com.demo.api.model.res.ResponseEntity;
+import com.demo.api.model.res.BaseRes;
 import com.demo.api.model.res.sys.GetSysApiLogListRes;
 import com.demo.api.model.res.sys.GetSysExternalApiLogListRes;
 import com.demo.api.service.SysService;
@@ -28,13 +28,13 @@ public class SysController extends BaseController {
 
     @PostMapping("/getSysApiLogList")
     @Operation(summary = "查詢系統API LOG", description = "查詢系統API LOG")
-    public ResponseEntity<GetSysApiLogListRes> getSysApiLogList(@RequestBody @Valid RequestEntity<GetSysApiLogListReq> req) {
+    public BaseRes<GetSysApiLogListRes> getSysApiLogList(@RequestBody @Valid BaseReq<GetSysApiLogListReq> req) {
         return result(sysService.getSysApiLogList(req.getParams()));
     }
 
     @PostMapping("/getSysExternalApiLogList")
     @Operation(summary = "查詢呼叫外部系統API LOG", description = "查詢呼叫外部系統API LOG")
-    public ResponseEntity<GetSysExternalApiLogListRes> getSysExternalApiLogList(@RequestBody @Valid RequestEntity<GetSysExternalApiLogListReq> req) {
+    public BaseRes<GetSysExternalApiLogListRes> getSysExternalApiLogList(@RequestBody @Valid BaseReq<GetSysExternalApiLogListReq> req) {
         return result(sysService.getSysExternalApiLogList(req.getParams()));
     }
 }
