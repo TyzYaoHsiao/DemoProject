@@ -1,6 +1,5 @@
 package com.demo.comp.impl;
 
-import com.demo.constant.ApiConst;
 import com.demo.constant.SysConst;
 import com.demo.domain.UserProfile;
 import com.demo.entity.SysExternalApiLog;
@@ -35,32 +34,23 @@ public class BaseCompImpl {
     }
 
     /**
-     * 寫入請求 LOG
+     * 寫入 LOG
      *
      * @param msgId
-     * @param request
+     * @param req      上行
+     * @param res      下行
+     * @param costTime 花費時間
+     * @param errorMsg 錯誤訊息
      */
-    protected void insertReqLog(String msgId, Object request) {
-        insertLog(msgId, ApiConst.MsgType.REQ, request);
-    }
-
-    /**
-     * 寫入回應 LOG
-     *
-     * @param msgId
-     * @param response
-     */
-    protected void insertResLog(String msgId, Object response) {
-        insertLog(msgId, ApiConst.MsgType.RES, response);
-    }
-
-    private void insertLog(String msgId, ApiConst.MsgType msgType, Object msgContent) {
+    protected void insertLog(String msgId, Object req, Object res, Long costTime, String errorMsg) {
         SysExternalApiLog log = SysExternalApiLog.builder()
                 .txnSeq(userProfile.getTxnSeq())
                 .msgId(msgId)
-                .msgType(msgType.getCode())
-                .msgContent(getMsgContent(msgContent))
-                .msgTime(DateUtil.getNow())
+                .params(getMsgContent(req))
+                .result(getMsgContent(res))
+                .errorMsg(errorMsg)
+                .costTime(costTime)
+                .createTime(DateUtil.getNow())
                 .build();
         sysExternalApiLogRepository.save(log);
     }

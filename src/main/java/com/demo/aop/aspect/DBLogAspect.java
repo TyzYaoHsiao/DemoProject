@@ -5,8 +5,10 @@ import com.demo.constant.SysConst;
 import com.demo.domain.UserProfile;
 import com.demo.entity.SysApiLog;
 import com.demo.repository.SysApiLogRepository;
+import com.demo.util.HttpContextUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -39,6 +41,9 @@ public class DBLogAspect {
 
     @Around(value = "com.demo.aop.pointcut.PointcutDefinition.restLayer()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
+        if (isPass()) {
+            return joinPoint.proceed();
+        }
 
         boolean hasException = false;
         Exception exception = null;
@@ -62,6 +67,22 @@ public class DBLogAspect {
         }
 
         return result;
+    }
+
+    private boolean isPass() {
+        HttpServletRequest httpServletRequest = HttpContextUtil.getHttpServletRequest();
+        boolean isPass = false;
+        for (String swaggerUrl : SysConst.SWAGGER_LIST) {
+            if (StringUtils.startsWith(httpServletRequest.getRequestURI(), swaggerUrl)) {
+                isPass = true;
+            }
+        }
+        for (String healthyUrl : SysConst.HEALTHY_LIST) {
+            if (StringUtils.startsWith(httpServletRequest.getRequestURI(), healthyUrl)) {
+                isPass = true;
+            }
+        }
+        return isPass;
     }
 
     private void saveSysApiLog(ProceedingJoinPoint joinPoint, Object result, boolean hasException, Exception exception) throws JsonProcessingException {

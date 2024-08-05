@@ -24,8 +24,10 @@ public class GetSysExternalApiLogListRes {
         private Long id;
         private String txnSeq;
         private String msgId;
-        private String msg;
-        private String response;
+        private String params;
+        private String result;
+        private String errorMsg;
+        private Long costTime;
         private String createTime;
     }
 }

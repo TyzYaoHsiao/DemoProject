@@ -33,13 +33,14 @@ public class DemoCompImpl extends BaseCompImpl implements DemoComp {
 
     public <T> T sendRequest(Object req, DemoConst.MsgId msgId, Class<T> valueType) {
         DemoBaseRes<T> response = null;
+        long beginTimeMillis = System.currentTimeMillis();
+        String errorMsg = null;
 
         DemoBaseReq<Object> request = DemoBaseReq.builder()
                 .txnSeq(userProfile.getTxnSeq())
                 .params(req)
                 .build();
 
-        insertReqLog(msgId.name(), request);
         try {
             response = restTemplate.exchange(getUrl(DemoConst.DEMO_URL_KEY), msgId.getHttpMethod(),
                     new HttpEntity<>(request, getHttpJsonHeader()),
@@ -49,9 +50,11 @@ public class DemoCompImpl extends BaseCompImpl implements DemoComp {
                         }
                     }).getBody();
         } catch (Exception e) {
+            errorMsg = e.getMessage();
             throw new DemoException(MessageConst.RtnCode.DEMO_API_ERROR);
         } finally {
-            insertResLog(msgId.name(), response);
+            long costTime = System.currentTimeMillis() - beginTimeMillis;
+            insertLog(msgId.name(), request, response, costTime, errorMsg);
         }
         return response.getResult();
     }

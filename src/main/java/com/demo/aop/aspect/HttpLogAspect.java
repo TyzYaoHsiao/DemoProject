@@ -60,7 +60,7 @@ public class HttpLogAspect {
             log.info("Class Method   : {}.{}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
             log.info("Request Args   : {}", argsStr);
             log.info("Result         : {}", response);
-            log.info("costTime       : {}", beginTimeMillis - System.currentTimeMillis());
+            log.info("costTime       : {}", System.currentTimeMillis() - beginTimeMillis);
             log.info("===========================End==================================================");
         }
 

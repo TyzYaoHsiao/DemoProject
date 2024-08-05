@@ -23,7 +23,9 @@ CREATE TABLE IF NOT EXISTS `SYS_EXTERNAL_API_LOG` (
   `ID` int AUTO_INCREMENT  PRIMARY KEY,
   `TXN_SEQ` varchar(50) NOT NULL,
   `MSG_ID` varchar(50),
-  `MSG_TYPE` varchar(1),
-  `MSG_CONTENT` varchar(3000),
-  `MSG_TIME` TIMESTAMP
+  `PARAMS` varchar(3000),
+  `RESULT` varchar(3000),
+  `ERROR_MSG` varchar(3000),
+  `COST_TIME` int,
+  `CREATE_TIME` TIMESTAMP
 );

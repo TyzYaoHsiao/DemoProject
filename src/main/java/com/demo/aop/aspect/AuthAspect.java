@@ -2,6 +2,7 @@ package com.demo.aop.aspect;
 
 import com.demo.api.model.req.RequestEntity;
 import com.demo.domain.UserProfile;
+import com.demo.util.HttpContextUtil;
 import com.demo.util.RequestUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,8 +14,6 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * 權限驗證
@@ -38,7 +37,7 @@ public class AuthAspect {
      */
     @Before(value = "com.demo.aop.pointcut.PointcutDefinition.restLayer()")
     public void authValid(JoinPoint joinPoint) {
-        HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        HttpServletRequest httpServletRequest = HttpContextUtil.getHttpServletRequest();
         if (StringUtils.startsWith(httpServletRequest.getRequestURI(), "/swagger")
                 || StringUtils.endsWith(httpServletRequest.getRequestURI(), "/v3/api-docs")) {
             return;

@@ -26,12 +26,18 @@ public class SysExternalApiLog {
     @Column(name = "MSG_ID", length = 50)
     private String msgId;
 
-    @Column(name = "MSG_TYPE", nullable = false, length = 1)
-    private String msgType;
+    @Column(name = "PARAMS", length = 3000)
+    private String params;
 
-    @Column(name = "MSG_CONTENT", length = 3000)
-    private String msgContent;
+    @Column(name = "RESULT", length = 3000)
+    private String result;
 
-    @Column(name = "MSG_TIME", nullable = false)
-    private LocalDateTime msgTime;
+    @Column(name = "ERROR_MSG", length = 3000)
+    private String errorMsg;
+
+    @Column(name = "COST_TIME")
+    private Long costTime;
+
+    @Column(name = "CREATE_TIME", nullable = false)
+    private LocalDateTime createTime;
 }

@@ -62,7 +62,7 @@ public class SysServiceImpl implements SysService {
                         .map(r -> {
                             GetSysExternalApiLogListRes.SysExternalApiLog sysExternalApiLog = new GetSysExternalApiLogListRes.SysExternalApiLog();
                             BeanUtils.copyProperties(r, sysExternalApiLog);
-                            sysExternalApiLog.setCreateTime(DateUtil.formatDateToStr(r.getMsgTime(), DateUtil.BASIC_FORMAT));
+                            sysExternalApiLog.setCreateTime(DateUtil.formatDateToStr(r.getCreateTime(), DateUtil.BASIC_FORMAT));
                             return sysExternalApiLog;
                         })
                         .collect(Collectors.toList()))

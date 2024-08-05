@@ -1,106 +1,54 @@
 package com.demo.controller;
 
-import com.demo.dto.TestDto;
-import com.demo.util.SQLUtil;
+import com.demo.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.info.GitProperties;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class HealthyCheckController {
 
-    private final SQLUtil sqlUtil;
+    @Autowired(required = false)
+    private GitProperties gitProperties;
 
     @GetMapping("/healthyCheck")
     public String healthyCheck() {
         return "OK";
     }
 
-    @GetMapping("/test")
-    public String test() {
+    @GetMapping("/version")
+    public Object version() {
+        Map<String, Object> gitInfo = new LinkedHashMap<>();
 
-        String sqlStr = "SELECT " +
-                " '123' as TEST_INT, " +
-                " '123' as TEST_SHORT, " +
-                " '123' as TEST_LONG, " +
-                " '123' as TEST_FLOAT, " +
-                " '123' as TEST_DOUBLE, " +
-                " '123' as TEST_NUMBER, " +
-                " '123' as TEST_DECIMAL, " +
-                " '123' as TEST_BIGDECIMAL, " +
-                " '123' as TEST_STRING " +
-                " FROM ADM_USER a ";
+        if (gitProperties != null) {
+            String buildTime = null;
+            String s = gitProperties.get("build.time");
+            if (StringUtils.isNotBlank(s)) {
+                LocalDateTime time = Instant.ofEpochMilli(Long.parseLong(s))
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime();
 
-        List<TestDto> dtoList = sqlUtil.findList(sqlStr, TestDto.class);
-        if (CollectionUtils.isNotEmpty(dtoList)) {
-            for (TestDto testDto : dtoList) {
-                log.info("testInt           = " + testDto.getTestInt());
-                log.info("testShort         = " + testDto.getTestShort());
-                log.info("testLong          = " + testDto.getTestLong());
-                log.info("testFloat         = " + testDto.getTestFloat());
-                log.info("testDouble        = " + testDto.getTestDouble());
-                log.info("testNumber        = " + testDto.getTestNumber());
-                log.info("testDecimal       = " + testDto.getTestDecimal());
-                log.info("testBigDecimal    = " + testDto.getTestBigDecimal());
-                log.info("testBoolean       = " + testDto.getTestBoolean());
-                log.info("testString        = " + testDto.getTestString());
-                log.info("testTimestamp     = " + testDto.getTestTimestamp());
-                log.info("testSqlDate       = " + testDto.getTestSqlDate());
-                log.info("testJavaDate      = " + testDto.getTestJavaDate());
-                log.info("testLocalDate     = " + testDto.getTestLocalDate());
-                log.info("testLocalDateTime = " + testDto.getTestLocalDateTime());
+                DateTimeFormatter df = DateTimeFormatter.ofPattern(DateUtil.API_TIME_FORMAT);
+                buildTime = df.format(time);
             }
+
+            gitInfo.put("branch", gitProperties.getBranch());
+            gitInfo.put("commitId", gitProperties.getCommitId());
+            gitInfo.put("buildTime", buildTime);
         }
-
-        return "OK";
+        return gitInfo;
     }
-
-
-
-    public static void main(String[] args) {
-
-
-    }
-
-//    public static String turnListToString(List<String> list, boolean addSingleQuote) {
-//
-//        if (CollectionUtils.isEmpty(list)) {
-//            return null;
-//        }
-//
-//        List<String> stringList = list.stream()
-//                .filter(StringUtils::isNotBlank)
-//                .filter(x -> StringUtils.isNotBlank(x))
-//                .map(x -> addSingleQuote ? "'" + x + "'" : x)
-//                .toList();
-//
-//        return String.join(",", stringList);
-//    }
-//
-//    public static String turnListToString(List<?> list, String fieldName, boolean addSingleQuote) {
-//
-//        if (CollectionUtils.isEmpty(list)) {
-//            return null;
-//        }
-//
-//        List<String> stringList = list.stream()
-//                .filter(Objects::nonNull)
-//                .map(x -> {
-//                    String propertyValue = "";
-//                    if (StringUtils.isBlank(propertyValue)) {
-//                        return null;
-//                    }
-//                    return addSingleQuote ? "'" + propertyValue + "'" : propertyValue;
-//                })
-//                .filter(StringUtils::isNotBlank)
-//                .toList();
-//
-//        return String.join(",", stringList);
-//    }
 }
