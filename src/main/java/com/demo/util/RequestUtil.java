@@ -1,12 +1,13 @@
 package com.demo.util;
 
+import com.demo.constant.ApiConst;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 
 @Slf4j
-public class RequestUtils {
+public class RequestUtil {
 
     public static final String UNKNOWN = "unknown";
 
@@ -61,6 +62,17 @@ public class RequestUtils {
         }
 
         return trueIp;
+    }
+
+    public static boolean isSkip() {
+        HttpServletRequest httpServletRequest = HttpContextUtil.getHttpServletRequest();
+        boolean isSkip = false;
+        for (String ignoreUrl : ApiConst.IGNORE_LIST) {
+            if (StringUtils.startsWith(httpServletRequest.getRequestURI(), ignoreUrl)) {
+                isSkip = true;
+            }
+        }
+        return isSkip;
     }
 
 }

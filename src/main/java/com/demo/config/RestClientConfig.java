@@ -1,14 +1,11 @@
 package com.demo.config;
 
 import com.demo.interceptor.RestTemplateLoggingInterceptor;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManager;
-import org.apache.hc.client5.http.socket.ConnectionSocketFactory;
-import org.apache.hc.client5.http.socket.PlainConnectionSocketFactory;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
-import org.apache.hc.core5.http.config.Registry;
-import org.apache.hc.core5.http.config.RegistryBuilder;
-import org.apache.hc.core5.ssl.SSLContexts;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
+import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder;
+import org.apache.hc.core5.ssl.SSLContextBuilder;
 import org.apache.hc.core5.ssl.TrustStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,7 +17,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
@@ -29,7 +25,6 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Slf4j
 @Configuration
 public class RestClientConfig {
 
@@ -60,37 +55,24 @@ public class RestClientConfig {
         TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
         HostnameVerifier hostname = (String s, SSLSession sslSession) -> true;
 
-        SSLContext sslContext = null;
-        try {
-            sslContext = SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy).build();
-        } catch (KeyManagementException | KeyStoreException | NoSuchAlgorithmException e) {
-            log.error(e.getMessage(), e);
-        }
-
-        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext,
-                hostname);
-        Registry<ConnectionSocketFactory> registry = RegistryBuilder.
-                <ConnectionSocketFactory>create()
-                .register("http", new PlainConnectionSocketFactory())
-                .register("https", sslsf)
+        CloseableHttpClient httpClient = HttpClients.custom()
+                .setConnectionManager(PoolingHttpClientConnectionManagerBuilder.create()
+                        .setMaxConnPerRoute(1000)
+                        .setMaxConnTotal(1000)
+                        .setSSLSocketFactory(SSLConnectionSocketFactoryBuilder.create()
+                                .setSslContext(SSLContextBuilder.create()
+                                        .loadTrustMaterial(acceptingTrustStrategy)
+                                        .build())
+                                .setHostnameVerifier(hostname)
+                                .build())
+                        .build())
                 .build();
 
-        PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager(registry);
-        connectionManager.setDefaultMaxPerRoute(1000);
-        connectionManager.setMaxTotal(1000);
-//        CloseableHttpClient httpClient = HttpClients.custom()
-//                .setSSLContext(sslContext)
-//                .setSSLHostnameVerifier(hostname)
-//                .setConnectionManager(connectionManager)
-//                .build();
-
-        HttpComponentsClientHttpRequestFactory requestFactory =
-                new HttpComponentsClientHttpRequestFactory();
-//        requestFactory.setHttpClient(httpClient);
-//        requestFactory.setReadTimeout(readTimeout);
+        HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+        requestFactory.setHttpClient(httpClient);
         requestFactory.setConnectTimeout(connetTimeout);
+        requestFactory.setConnectionRequestTimeout(readTimeout);
 
         return new BufferingClientHttpRequestFactory(requestFactory);
     }
-
 }

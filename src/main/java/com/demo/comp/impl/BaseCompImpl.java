@@ -1,12 +1,11 @@
 package com.demo.comp.impl;
 
-import com.demo.constant.SysConst;
 import com.demo.domain.UserProfile;
 import com.demo.entity.SysExternalApiLog;
 import com.demo.repository.SysExternalApiLogRepository;
 import com.demo.util.DateUtil;
+import com.demo.util.LogUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -46,33 +45,13 @@ public class BaseCompImpl {
         SysExternalApiLog log = SysExternalApiLog.builder()
                 .txnSeq(userProfile.getTxnSeq())
                 .msgId(msgId)
-                .params(getMsgContent(req))
-                .result(getMsgContent(res))
+                .params(LogUtil.dbLog(req))
+                .result(LogUtil.dbLog(res))
                 .errorMsg(errorMsg)
                 .costTime(costTime)
                 .createTime(DateUtil.getNow())
                 .build();
         sysExternalApiLogRepository.save(log);
-    }
-
-    /**
-     * json 物件 to string
-     *
-     * @param obj content
-     * @return
-     */
-    private String getMsgContent(Object obj) {
-        String msg;
-        try {
-            msg = objectMapper.writeValueAsString(obj);
-        } catch (Exception e) {
-            msg = obj.toString();
-        }
-
-        if (msg.length() > SysConst.DB_LOG_MAX_LENGTH) {
-            msg = StringUtils.substring(msg, 0, SysConst.DB_LOG_MAX_LENGTH);
-        }
-        return msg;
     }
 
     /**

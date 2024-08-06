@@ -3,15 +3,13 @@ package com.demo.aop.aspect;
 import com.demo.api.model.req.RequestEntity;
 import com.demo.domain.UserProfile;
 import com.demo.util.HttpContextUtil;
-import com.demo.util.RequestUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.demo.util.RequestUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -22,13 +20,10 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 @Order(value = 3)
+@RequiredArgsConstructor
 public class AuthAspect {
 
-    @Autowired
-    private UserProfile userProfile;
-
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final UserProfile userProfile;
 
     /**
      * 攔截點
@@ -38,8 +33,7 @@ public class AuthAspect {
     @Before(value = "com.demo.aop.pointcut.PointcutDefinition.restLayer()")
     public void authValid(JoinPoint joinPoint) {
         HttpServletRequest httpServletRequest = HttpContextUtil.getHttpServletRequest();
-        if (StringUtils.startsWith(httpServletRequest.getRequestURI(), "/swagger")
-                || StringUtils.endsWith(httpServletRequest.getRequestURI(), "/v3/api-docs")) {
+        if (RequestUtil.isSkip()) {
             return;
         }
 
@@ -60,7 +54,7 @@ public class AuthAspect {
             for (Object object : args) {
                 if (object instanceof RequestEntity requestEntity) {
                     userProfile.setTxnSeq(requestEntity.getTxnSeq());
-                    userProfile.setClientIp(RequestUtils.getIpAddr(httpServletRequest));
+                    userProfile.setClientIp(RequestUtil.getIpAddr(httpServletRequest));
                 }
             }
         }

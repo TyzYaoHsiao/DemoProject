@@ -1,14 +1,11 @@
 package com.demo.aop.aspect;
 
 import com.demo.api.model.req.RequestEntity;
-import com.demo.constant.SysConst;
 import com.demo.domain.UserProfile;
 import com.demo.entity.SysApiLog;
 import com.demo.repository.SysApiLogRepository;
-import com.demo.util.HttpContextUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.http.HttpServletRequest;
+import com.demo.util.LogUtil;
+import com.demo.util.RequestUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -36,12 +33,11 @@ import java.util.Map;
 public class DBLogAspect {
 
     private final UserProfile userProfile;
-    private final ObjectMapper objectMapper;
     private final SysApiLogRepository sysApiLogRepository;
 
     @Around(value = "com.demo.aop.pointcut.PointcutDefinition.restLayer()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        if (isPass()) {
+        if (RequestUtil.isSkip()) {
             return joinPoint.proceed();
         }
 
@@ -56,11 +52,7 @@ public class DBLogAspect {
             exception = e;
         }
 
-        try {
-            saveSysApiLog(joinPoint, result, hasException, exception);
-        } catch (Exception e) {
-            log.error("saveSysApiLog error: {}", e.getMessage());
-        }
+        saveSysApiLog(joinPoint, result, hasException, exception);
 
         if (hasException) {
             throw exception;
@@ -69,52 +61,36 @@ public class DBLogAspect {
         return result;
     }
 
-    private boolean isPass() {
-        HttpServletRequest httpServletRequest = HttpContextUtil.getHttpServletRequest();
-        boolean isPass = false;
-        for (String swaggerUrl : SysConst.SWAGGER_LIST) {
-            if (StringUtils.startsWith(httpServletRequest.getRequestURI(), swaggerUrl)) {
-                isPass = true;
-            }
-        }
-        for (String healthyUrl : SysConst.HEALTHY_LIST) {
-            if (StringUtils.startsWith(httpServletRequest.getRequestURI(), healthyUrl)) {
-                isPass = true;
-            }
-        }
-        return isPass;
-    }
-
-    private void saveSysApiLog(ProceedingJoinPoint joinPoint, Object result, boolean hasException, Exception exception) throws JsonProcessingException {
+    private void saveSysApiLog(ProceedingJoinPoint joinPoint, Object result, boolean hasException, Exception exception) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-        SysApiLog sysApiLog = new SysApiLog();
         String className = joinPoint.getTarget().getClass().getName();
         String methodName = signature.getName();
 
-        String params = "{}";
         Object[] args = joinPoint.getArgs();
-        try {
-            if (args != null) {
-                for (Object object : args) {
-                    if (object instanceof RequestEntity requestEntity) {
-                        params = getMsgContent(requestEntity);
+        String params = null;
+
+        if (args != null) {
+            for (Object object : args) {
+                if (object instanceof RequestEntity requestEntity) {
+                    try {
+                        params = LogUtil.fileLog(requestEntity);
+                    } catch (Exception e) {
+                        params = Arrays.toString(args);
                     }
                 }
             }
-        } catch (Exception e) {
-            params = Arrays.toString(args);
-            log.error("saveSysApiLog toJSONString error : {}", e.getMessage());
         }
 
+        SysApiLog sysApiLog = new SysApiLog();
         sysApiLog.setUserId(userProfile.getUserId());
         sysApiLog.setTxnSeq(userProfile.getTxnSeq());
         sysApiLog.setParams(params);
-        sysApiLog.setResult(getMsgContent(result));
+        sysApiLog.setResult(LogUtil.dbLog(result));
         sysApiLog.setMethod(className + "." + methodName + "()");
         sysApiLog.setCreateTime(LocalDateTime.now());
 
         if (hasException) {
-            sysApiLog.setErrorMsg(getMsgContent(exception.getMessage()));
+            sysApiLog.setErrorMsg(LogUtil.dbLog(exception.getMessage()));
         }
         sysApiLogRepository.save(sysApiLog);
     }
@@ -160,23 +136,4 @@ public class DBLogAspect {
             }
         }
     }
-
-    /**
-     * 內容長度處理
-     *
-     * @param obj
-     * @return
-     */
-    private String getMsgContent(Object obj) throws JsonProcessingException {
-        if (obj == null) {
-            return "";
-        }
-
-        String msg = objectMapper.writeValueAsString(obj);
-        if (msg.length() > SysConst.DB_LOG_MAX_LENGTH) {
-            msg = StringUtils.substring(msg, 0, SysConst.DB_LOG_MAX_LENGTH);
-        }
-        return msg;
-    }
-
 }

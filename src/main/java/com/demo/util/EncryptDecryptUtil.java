@@ -59,23 +59,4 @@ public class EncryptDecryptUtil {
         }
         return null;
     }
-
-    /**
-     * 密碼系統解密方式
-     *
-     * @param model   演算法
-     * @param key     解密 key
-     * @param content 加密字串
-     */
-    public static String aesCPVSDecrypt(String model, byte[] key, String content) {
-        SecretKeySpec aesKey = new SecretKeySpec(key, "AES");
-        try {
-            Cipher cipher = Cipher.getInstance(model);
-            cipher.init(Cipher.DECRYPT_MODE, aesKey);
-            return new String(cipher.doFinal(Hex.decodeHex(content)), StandardCharsets.UTF_8);
-        } catch (Exception e) {
-            log.error("aesCPVSDecrypt ERROR: ", e);
-        }
-        return null;
-    }
 }

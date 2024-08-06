@@ -42,7 +42,7 @@ public class DemoCompImpl extends BaseCompImpl implements DemoComp {
                 .build();
 
         try {
-            response = restTemplate.exchange(getUrl(DemoConst.DEMO_URL_KEY), msgId.getHttpMethod(),
+            response = restTemplate.exchange("http://127.0.0.1:8080/demo" + msgId.getUrl(), msgId.getHttpMethod(),
                     new HttpEntity<>(request, getHttpJsonHeader()),
                     new ParameterizedTypeReference<DemoBaseRes<T>>() {
                         public Type getType() {

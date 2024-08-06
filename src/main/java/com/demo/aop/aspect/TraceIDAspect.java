@@ -27,11 +27,7 @@ public class TraceIDAspect {
     @Around(value = "com.demo.aop.pointcut.PointcutDefinition.restLayer()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         MDC.put(SysConst.TRACE_ID_KEY, RandomStringUtils.randomAlphanumeric(SysConst.TRACE_ID_KEY_LENGTH));
-//        try {
-            return joinPoint.proceed();
-//        } finally {
-//            MDC.remove(Const.TRACE_ID_KEY);
-//        }
+        return joinPoint.proceed();
     }
 
 }
