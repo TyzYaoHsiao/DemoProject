@@ -66,7 +66,7 @@ public class DemoExceptionHandler {
     @ExceptionHandler(Exception.class)
     public Object handleException(Exception exception) {
         log.error(exception.getMessage(), exception);
-        return new DemoException(MessageConst.RtnCode.SYSTEM_ERROR);
+        return returnResponse(new DemoException(MessageConst.RtnCode.SYSTEM_ERROR));
     }
 
     /**
