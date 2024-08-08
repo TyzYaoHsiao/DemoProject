@@ -21,6 +21,6 @@ public class ApiConst {
     static {
         WHITE_LIST.addAll(IGNORE_LIST);
         WHITE_LIST.add("/demo/adm/addAdmUser");
-        WHITE_LIST.add("/**");
+        WHITE_LIST.add("/**"); // TODO 白名單
     }
 }

@@ -10,7 +10,7 @@ import com.demo.api.service.AdmService;
 import com.demo.controller.BaseController;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @RequestMapping("/adm")
+@RequiredArgsConstructor
 public class AdmController extends BaseController {
 
-    @Autowired
-    private AdmService admService;
+    private final AdmService admService;
 
     @PostMapping("/addAdmUser")
     @Operation(summary = "新增使用者", description = "新增使用者")

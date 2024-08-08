@@ -21,6 +21,7 @@ import com.demo.util.DateUtil;
 import com.demo.util.ExcelUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -98,6 +99,10 @@ public class AdmServiceImpl implements AdmService {
                         .createTime(DateUtil.formatDateToStr(r.getCreateTime(), DateUtil.BASIC_FORMAT))
                         .build())
                 .toList();
+
+        if (CollectionUtils.isEmpty(admUserExcelList)) {
+            throw new DemoException(MessageConst.RtnCode.DATA_NOT_FOUND);
+        }
 
         List<ExcelExportData> excelExportDataList = new ArrayList<>();
         excelExportDataList.add(ExcelExportData.builder()

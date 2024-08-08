@@ -12,6 +12,7 @@ import com.demo.error.DemoException;
 import com.demo.repository.SysApiLogRepository;
 import com.demo.repository.SysExternalApiLogRepository;
 import com.demo.util.DateUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,13 +22,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class SysServiceImpl implements SysService {
 
-    @Autowired
-    private SysApiLogRepository sysApiLogRepository;
-
-    @Autowired
-    private SysExternalApiLogRepository sysExternalApiLogRepository;
+    private final SysApiLogRepository sysApiLogRepository;
+    private final SysExternalApiLogRepository sysExternalApiLogRepository;
 
     @Override
     public GetSysApiLogListRes getSysApiLogList(GetSysApiLogListReq req) {

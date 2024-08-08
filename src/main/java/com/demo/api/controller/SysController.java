@@ -10,17 +10,17 @@ import com.demo.api.service.SysService;
 import com.demo.controller.BaseController;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @Validated
 @RestController
 @RequestMapping("/sys")
+@RequiredArgsConstructor
 public class SysController extends BaseController {
 
-    @Autowired
-    private SysService sysService;
+    private final SysService sysService;
 
     @PostMapping("/getSysApiLogList")
     @Operation(summary = "查詢系統API LOG", description = "查詢系統API LOG")
