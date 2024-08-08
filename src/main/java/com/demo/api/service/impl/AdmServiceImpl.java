@@ -3,6 +3,7 @@ package com.demo.api.service.impl;
 import com.demo.api.model.req.adm.AddAdmUserReq;
 import com.demo.api.model.req.adm.GetAdmUserReq;
 import com.demo.api.model.req.demo.GetAdmUserExcelReq;
+import com.demo.api.model.res.adm.GetAdmUserListRes;
 import com.demo.api.model.res.adm.GetAdmUserRes;
 import com.demo.api.service.AdmService;
 import com.demo.comp.DemoComp;
@@ -67,6 +68,27 @@ public class AdmServiceImpl implements AdmService {
     }
 
     @Override
+    public GetAdmUserListRes getAdmUserList() {
+
+        List<AdmUser> sourceList = admUserRepository.findAll();
+        if (CollectionUtils.isEmpty(sourceList)) {
+            throw new DemoException(MessageConst.RtnCode.DATA_NOT_FOUND);
+        }
+
+        List<GetAdmUserListRes.AdmUser> admUserList = sourceList.stream()
+                .map(r -> {
+                    GetAdmUserListRes.AdmUser admUser = new GetAdmUserListRes.AdmUser();
+                    BeanUtils.copyProperties(r, admUser);
+                    return admUser;
+                })
+                .toList();
+
+        return GetAdmUserListRes.builder()
+                .admUserList(admUserList)
+                .build();
+    }
+
+    @Override
     public GetAdmUserRes getAdmUser2(GetAdmUserReq req) {
 
         DemoReq demoReq = DemoReq.builder()
@@ -89,6 +111,9 @@ public class AdmServiceImpl implements AdmService {
     public void getAdmUserExcel(GetAdmUserExcelReq req) {
 
         List<AdmUser> admUserList = admUserRepository.findAll();
+        if (CollectionUtils.isEmpty(admUserList)) {
+            throw new DemoException(MessageConst.RtnCode.DATA_NOT_FOUND);
+        }
 
         List<AdmUserExcel> admUserExcelList = admUserList.stream()
                 .map(r -> AdmUserExcel.builder()
@@ -99,10 +124,6 @@ public class AdmServiceImpl implements AdmService {
                         .createTime(DateUtil.formatDateToStr(r.getCreateTime(), DateUtil.BASIC_FORMAT))
                         .build())
                 .toList();
-
-        if (CollectionUtils.isEmpty(admUserExcelList)) {
-            throw new DemoException(MessageConst.RtnCode.DATA_NOT_FOUND);
-        }
 
         List<ExcelExportData> excelExportDataList = new ArrayList<>();
         excelExportDataList.add(ExcelExportData.builder()

@@ -5,6 +5,7 @@ import com.demo.api.model.req.adm.AddAdmUserReq;
 import com.demo.api.model.req.adm.GetAdmUserReq;
 import com.demo.api.model.req.demo.GetAdmUserExcelReq;
 import com.demo.api.model.res.ResponseEntity;
+import com.demo.api.model.res.adm.GetAdmUserListRes;
 import com.demo.api.model.res.adm.GetAdmUserRes;
 import com.demo.api.service.AdmService;
 import com.demo.controller.BaseController;
@@ -29,6 +30,12 @@ public class AdmController extends BaseController {
     @Operation(summary = "新增使用者", description = "新增使用者")
     public ResponseEntity<Void> addAdmUser(@RequestBody @Valid RequestEntity<AddAdmUserReq> req) {
         return success(admService.addAdmUser(req.getParams()));
+    }
+
+    @PostMapping("/getAdmUserList")
+    @Operation(summary = "取得使用者清單", description = "取得使用者清單")
+    public ResponseEntity<GetAdmUserListRes> getAdmUserList(@RequestBody @Valid RequestEntity req) {
+        return success(admService.getAdmUserList());
     }
 
     @PostMapping("/getAdmUser")
