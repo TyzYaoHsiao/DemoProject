@@ -1,14 +1,14 @@
-package com.demo.externalapi.demo.core;
+package com.ziyao.demo.externalapi.demo.core;
 
 import com.demo.comp.DemoComp;
 import com.demo.comp.impl.BaseCompImpl;
 import com.demo.constant.DemoConst;
 import com.demo.constant.MessageConst;
 import com.demo.error.DemoException;
-import com.demo.externalapi.demo.req.DemoBaseReq;
-import com.demo.externalapi.demo.req.DemoReq;
-import com.demo.externalapi.demo.res.DemoBaseRes;
-import com.demo.externalapi.demo.res.DemoRes;
+import com.ziyao.demo.externalapi.demo.req.DemoBaseReq;
+import com.ziyao.demo.externalapi.demo.req.DemoReq;
+import com.ziyao.demo.externalapi.demo.res.DemoBaseRes;
+import com.ziyao.demo.externalapi.demo.res.DemoRes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;

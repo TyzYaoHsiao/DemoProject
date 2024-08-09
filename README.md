@@ -17,7 +17,7 @@
 * **controller/** – 共用流程控制、healthyCheck
 * **domain/** – 對象模組
 * **entity/** – DB ORM
-* **error/** – 自訂錯誤
+* **error/** – 自訂錯誤、全域異常處理器
 * **externalapi/** – 外部系統api
 * **filter/** – servlet filter
 * **interceptor/** – 攔截器
@@ -26,7 +26,7 @@
 * **util/** – 共用工具
 * **validator/** – 欄位檢核
 * **src/main/resource**
-* **application.yml** – spring 設定檔區分環境 dev、uat、prod
+* **application.yml** – spring 設定檔
 
 ## 開發API ##
 1. 依照 api spec 建立 request response

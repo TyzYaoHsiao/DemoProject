@@ -1,4 +1,4 @@
-package com.demo.externalapi.demo.res;
+package com.ziyao.demo.externalapi.demo.res;
 
 import lombok.Getter;
 

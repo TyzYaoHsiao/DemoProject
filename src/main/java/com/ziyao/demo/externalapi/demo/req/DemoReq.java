@@ -1,4 +1,4 @@
-package com.demo.externalapi.demo.req;
+package com.ziyao.demo.externalapi.demo.req;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

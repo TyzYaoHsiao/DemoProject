@@ -1,7 +1,7 @@
 package com.demo.comp;
 
-import com.demo.externalapi.demo.req.DemoReq;
-import com.demo.externalapi.demo.res.DemoRes;
+import com.ziyao.demo.externalapi.demo.req.DemoReq;
+import com.ziyao.demo.externalapi.demo.res.DemoRes;
 
 // TODO FOR DEMO
 public interface DemoComp {
