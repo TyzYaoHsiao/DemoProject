@@ -1,4 +1,4 @@
-package com.demo.api.model.req.adm;
+package com.ziyao.demo.api.model.req.adm;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

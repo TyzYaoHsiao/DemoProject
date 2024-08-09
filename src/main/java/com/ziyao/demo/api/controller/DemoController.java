@@ -1,10 +1,10 @@
-package com.demo.api.controller;
+package com.ziyao.demo.api.controller;
 
-import com.demo.api.model.req.RequestEntity;
-import com.demo.api.model.req.demo.FileUploadReq;
-import com.demo.api.model.res.ResponseEntity;
-import com.demo.api.service.DemoService;
-import com.demo.controller.BaseController;
+import com.ziyao.demo.api.model.req.RequestEntity;
+import com.ziyao.demo.api.model.req.demo.FileUploadReq;
+import com.ziyao.demo.api.model.res.ResponseEntity;
+import com.ziyao.demo.api.service.DemoService;
+import com.ziyao.demo.controller.BaseController;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;

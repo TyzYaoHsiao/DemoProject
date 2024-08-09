@@ -1,4 +1,4 @@
-package com.demo.api.model.req.demo;
+package com.ziyao.demo.api.model.req.demo;
 
 public class GetAdmUserExcelReq {
 }

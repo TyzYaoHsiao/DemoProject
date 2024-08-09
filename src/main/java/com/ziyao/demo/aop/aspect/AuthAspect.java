@@ -1,9 +1,9 @@
-package com.demo.aop.aspect;
+package com.ziyao.demo.aop.aspect;
 
-import com.demo.api.model.req.RequestEntity;
-import com.demo.domain.UserProfile;
-import com.demo.util.HttpContextUtil;
-import com.demo.util.RequestUtil;
+import com.ziyao.demo.api.model.req.RequestEntity;
+import com.ziyao.demo.domain.UserProfile;
+import com.ziyao.demo.util.HttpContextUtil;
+import com.ziyao.demo.util.RequestUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class AuthAspect {
      *
      * @param joinPoint
      */
-    @Before(value = "com.demo.aop.pointcut.PointcutDefinition.restLayer()")
+    @Before(value = "com.ziyao.demo.aop.pointcut.PointcutDefinition.restLayer()")
     public void authValid(JoinPoint joinPoint) {
         HttpServletRequest httpServletRequest = HttpContextUtil.getHttpServletRequest();
         if (RequestUtil.isSkip()) {

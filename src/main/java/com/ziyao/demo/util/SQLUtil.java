@@ -1,4 +1,4 @@
-package com.demo.util;
+package com.ziyao.demo.util;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityManager;

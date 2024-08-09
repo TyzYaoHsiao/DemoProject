@@ -1,4 +1,4 @@
-package com.demo.util;
+package com.ziyao.demo.util;
 
 import lombok.extern.slf4j.Slf4j;
 

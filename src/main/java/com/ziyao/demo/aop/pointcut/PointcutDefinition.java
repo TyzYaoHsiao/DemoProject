@@ -1,4 +1,4 @@
-package com.demo.aop.pointcut;
+package com.ziyao.demo.aop.pointcut;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;

@@ -1,9 +1,9 @@
-package com.demo.aop.aspect;
+package com.ziyao.demo.aop.aspect;
 
-import com.demo.api.model.req.RequestEntity;
-import com.demo.util.HttpContextUtil;
-import com.demo.util.LogUtil;
-import com.demo.util.RequestUtil;
+import com.ziyao.demo.api.model.req.RequestEntity;
+import com.ziyao.demo.util.HttpContextUtil;
+import com.ziyao.demo.util.LogUtil;
+import com.ziyao.demo.util.RequestUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -24,7 +24,7 @@ import java.util.HashMap;
 @Order(value = 2)
 public class HttpLogAspect {
 
-    @Around(value = "com.demo.aop.pointcut.PointcutDefinition.restLayer()")
+    @Around(value = "com.ziyao.demo.aop.pointcut.PointcutDefinition.restLayer()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
 
         long beginTimeMillis = System.currentTimeMillis();

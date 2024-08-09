@@ -1,4 +1,4 @@
-package com.demo.api.model.req.sys;
+package com.ziyao.demo.api.model.req.sys;
 
 public class GetSysExternalApiLogListReq {
 }

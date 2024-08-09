@@ -1,14 +1,14 @@
-package com.demo.api.controller;
+package com.ziyao.demo.api.controller;
 
-import com.demo.api.model.req.RequestEntity;
-import com.demo.api.model.req.adm.AddAdmUserReq;
-import com.demo.api.model.req.adm.GetAdmUserReq;
-import com.demo.api.model.req.demo.GetAdmUserExcelReq;
-import com.demo.api.model.res.ResponseEntity;
-import com.demo.api.model.res.adm.GetAdmUserListRes;
-import com.demo.api.model.res.adm.GetAdmUserRes;
-import com.demo.api.service.AdmService;
-import com.demo.controller.BaseController;
+import com.ziyao.demo.api.model.req.RequestEntity;
+import com.ziyao.demo.api.model.req.adm.AddAdmUserReq;
+import com.ziyao.demo.api.model.req.adm.GetAdmUserReq;
+import com.ziyao.demo.api.model.req.demo.GetAdmUserExcelReq;
+import com.ziyao.demo.api.model.res.ResponseEntity;
+import com.ziyao.demo.api.model.res.adm.GetAdmUserListRes;
+import com.ziyao.demo.api.model.res.adm.GetAdmUserRes;
+import com.ziyao.demo.api.service.AdmService;
+import com.ziyao.demo.controller.BaseController;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

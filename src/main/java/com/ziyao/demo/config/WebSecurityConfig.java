@@ -1,6 +1,6 @@
-package com.demo.config;
+package com.ziyao.demo.config;
 
-import com.demo.constant.ApiConst;
+import com.ziyao.demo.constant.ApiConst;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;

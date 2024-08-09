@@ -1,6 +1,6 @@
-package com.demo.api.service;
+package com.ziyao.demo.api.service;
 
-import com.demo.api.model.req.demo.FileUploadReq;
+import com.ziyao.demo.api.model.req.demo.FileUploadReq;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface DemoService {

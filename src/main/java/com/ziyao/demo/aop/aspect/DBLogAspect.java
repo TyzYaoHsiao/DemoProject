@@ -1,11 +1,11 @@
-package com.demo.aop.aspect;
+package com.ziyao.demo.aop.aspect;
 
-import com.demo.api.model.req.RequestEntity;
-import com.demo.domain.UserProfile;
-import com.demo.entity.SysApiLog;
-import com.demo.repository.SysApiLogRepository;
-import com.demo.util.LogUtil;
-import com.demo.util.RequestUtil;
+import com.ziyao.demo.api.model.req.RequestEntity;
+import com.ziyao.demo.domain.UserProfile;
+import com.ziyao.demo.entity.SysApiLog;
+import com.ziyao.demo.repository.SysApiLogRepository;
+import com.ziyao.demo.util.LogUtil;
+import com.ziyao.demo.util.RequestUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
@@ -35,7 +35,7 @@ public class DBLogAspect {
     private final UserProfile userProfile;
     private final SysApiLogRepository sysApiLogRepository;
 
-    @Around(value = "com.demo.aop.pointcut.PointcutDefinition.restLayer()")
+    @Around(value = "com.ziyao.demo.aop.pointcut.PointcutDefinition.restLayer()")
     public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
         if (RequestUtil.isSkip()) {
             return joinPoint.proceed();

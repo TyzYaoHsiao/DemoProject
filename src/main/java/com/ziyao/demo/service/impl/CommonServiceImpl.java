@@ -1,6 +1,6 @@
-package com.demo.service.impl;
+package com.ziyao.demo.service.impl;
 
-import com.demo.service.CommonService;
+import com.ziyao.demo.service.CommonService;
 import org.springframework.stereotype.Service;
 
 /**

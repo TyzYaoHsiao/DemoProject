@@ -1,4 +1,4 @@
-package com.demo.domain;
+package com.ziyao.demo.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

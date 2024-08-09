@@ -1,4 +1,4 @@
-package com.demo.util;
+package com.ziyao.demo.util;
 
 public class MessageUtil {
 

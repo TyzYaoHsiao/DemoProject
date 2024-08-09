@@ -1,6 +1,6 @@
-package com.demo.util;
+package com.ziyao.demo.util;
 
-import com.demo.constant.ApiConst;
+import com.ziyao.demo.constant.ApiConst;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

@@ -1,4 +1,4 @@
-package com.demo.api.model.req;
+package com.ziyao.demo.api.model.req;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

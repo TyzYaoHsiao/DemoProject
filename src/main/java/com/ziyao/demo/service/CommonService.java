@@ -1,4 +1,4 @@
-package com.demo.service;
+package com.ziyao.demo.service;
 
 public interface CommonService {
 }

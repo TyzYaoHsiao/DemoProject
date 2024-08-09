@@ -1,10 +1,10 @@
-package com.demo.comp.impl;
+package com.ziyao.demo.comp.impl;
 
-import com.demo.domain.UserProfile;
-import com.demo.entity.SysExternalApiLog;
-import com.demo.repository.SysExternalApiLogRepository;
-import com.demo.util.DateUtil;
-import com.demo.util.LogUtil;
+import com.ziyao.demo.domain.UserProfile;
+import com.ziyao.demo.entity.SysExternalApiLog;
+import com.ziyao.demo.repository.SysExternalApiLogRepository;
+import com.ziyao.demo.util.DateUtil;
+import com.ziyao.demo.util.LogUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

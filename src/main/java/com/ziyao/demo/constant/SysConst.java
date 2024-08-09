@@ -1,4 +1,4 @@
-package com.demo.constant;
+package com.ziyao.demo.constant;
 
 /**
  * 系統參數相關設定

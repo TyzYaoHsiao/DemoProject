@@ -1,7 +1,7 @@
-package com.demo.error;
+package com.ziyao.demo.error;
 
-import com.demo.constant.MessageConst;
-import com.demo.util.MessageUtil;
+import com.ziyao.demo.constant.MessageConst;
+import com.ziyao.demo.util.MessageUtil;
 import lombok.Getter;
 
 @Getter

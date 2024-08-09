@@ -1,6 +1,6 @@
-package com.demo.repository;
+package com.ziyao.demo.repository;
 
-import com.demo.entity.AdmUser;
+import com.ziyao.demo.entity.AdmUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

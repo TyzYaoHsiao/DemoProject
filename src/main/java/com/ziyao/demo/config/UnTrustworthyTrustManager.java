@@ -1,4 +1,4 @@
-package com.demo.config;
+package com.ziyao.demo.config;
 
 import javax.net.ssl.X509TrustManager;
 import java.security.cert.CertificateException;

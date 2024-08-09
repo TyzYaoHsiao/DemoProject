@@ -1,6 +1,6 @@
-package com.demo.util;
+package com.ziyao.demo.util;
 
-import com.demo.constant.SysConst;
+import com.ziyao.demo.constant.SysConst;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;

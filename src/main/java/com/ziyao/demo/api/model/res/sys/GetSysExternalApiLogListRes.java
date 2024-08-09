@@ -1,4 +1,4 @@
-package com.demo.api.model.res.sys;
+package com.ziyao.demo.api.model.res.sys;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package com.demo.config;
+package com.ziyao.demo.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

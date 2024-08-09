@@ -1,6 +1,6 @@
-package com.demo.repository;
+package com.ziyao.demo.repository;
 
-import com.demo.entity.SysApiLog;
+import com.ziyao.demo.entity.SysApiLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

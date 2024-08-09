@@ -1,6 +1,6 @@
-package com.demo.config;
+package com.ziyao.demo.config;
 
-import com.demo.constant.ApiConst;
+import com.ziyao.demo.constant.ApiConst;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;

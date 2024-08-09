@@ -1,4 +1,4 @@
-package com.demo.comp;
+package com.ziyao.demo.comp;
 
 import com.ziyao.demo.externalapi.demo.req.DemoReq;
 import com.ziyao.demo.externalapi.demo.res.DemoRes;

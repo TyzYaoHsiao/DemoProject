@@ -1,4 +1,4 @@
-package com.demo.config;
+package com.ziyao.demo.config;
 
 
 import org.springframework.context.annotation.Configuration;

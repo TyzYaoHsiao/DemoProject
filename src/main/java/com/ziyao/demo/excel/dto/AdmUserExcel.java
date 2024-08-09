@@ -1,6 +1,6 @@
-package com.demo.excel.dto;
+package com.ziyao.demo.excel.dto;
 
-import com.demo.excel.annotation.ExcelColumn;
+import com.ziyao.demo.excel.annotation.ExcelColumn;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

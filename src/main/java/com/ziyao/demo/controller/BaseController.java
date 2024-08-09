@@ -1,7 +1,7 @@
-package com.demo.controller;
+package com.ziyao.demo.controller;
 
-import com.demo.api.model.res.ResponseEntity;
-import com.demo.constant.MessageConst;
+import com.ziyao.demo.api.model.res.ResponseEntity;
+import com.ziyao.demo.constant.MessageConst;
 
 public class BaseController {
 

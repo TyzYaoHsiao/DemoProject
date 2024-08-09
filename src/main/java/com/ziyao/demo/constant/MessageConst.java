@@ -1,4 +1,4 @@
-package com.demo.constant;
+package com.ziyao.demo.constant;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

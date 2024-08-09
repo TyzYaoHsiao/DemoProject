@@ -1,7 +1,7 @@
-package com.demo.error;
+package com.ziyao.demo.error;
 
-import com.demo.api.model.res.ResponseEntity;
-import com.demo.constant.MessageConst;
+import com.ziyao.demo.api.model.res.ResponseEntity;
+import com.ziyao.demo.constant.MessageConst;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.HttpRequestMethodNotSupportedException;

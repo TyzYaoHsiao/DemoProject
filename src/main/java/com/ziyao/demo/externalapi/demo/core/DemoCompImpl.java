@@ -1,10 +1,10 @@
 package com.ziyao.demo.externalapi.demo.core;
 
-import com.demo.comp.DemoComp;
-import com.demo.comp.impl.BaseCompImpl;
-import com.demo.constant.DemoConst;
-import com.demo.constant.MessageConst;
-import com.demo.error.DemoException;
+import com.ziyao.demo.comp.DemoComp;
+import com.ziyao.demo.comp.impl.BaseCompImpl;
+import com.ziyao.demo.constant.DemoConst;
+import com.ziyao.demo.constant.MessageConst;
+import com.ziyao.demo.error.DemoException;
 import com.ziyao.demo.externalapi.demo.req.DemoBaseReq;
 import com.ziyao.demo.externalapi.demo.req.DemoReq;
 import com.ziyao.demo.externalapi.demo.res.DemoBaseRes;
